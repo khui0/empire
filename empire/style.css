@@ -23,10 +23,6 @@ button {
     background-color: #ebebeb;
 }
 
-button:hover {
-    background-color: #d6d6d6;
-}
-
 label {
     display: flex;
     flex-direction: column;
@@ -72,6 +68,12 @@ dialog>div:last-of-type {
 
 dialog>div:last-of-type>button {
     flex: 1;
+}
+
+@media (hover: hover) {
+    button:hover {
+        background-color: #d6d6d6;
+    }
 }
 
 .eliminated {
