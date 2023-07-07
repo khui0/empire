@@ -60,7 +60,7 @@ dialog {
     flex-direction: column;
     gap: 5px;
     box-sizing: content-box;
-    width: min(100%, 300px);
+    width: min(100%, 350px);
     padding: 10px;
     border: 1px solid var(--text-color);
     border-radius: 5px;
