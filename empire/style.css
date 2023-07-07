@@ -15,7 +15,7 @@ body {
 }
 
 button {
-    height: 1.75em;
+    height: 1.9em;
     padding: 0em 1em;
     border: none;
     border-radius: 5px;
@@ -37,7 +37,7 @@ label>:first-child {
 }
 
 input {
-    height: 1.75em;
+    height: 1.9em;
     padding: 0 0.25em;
     border: 1px solid var(--text-color);
     border-radius: 5px;
@@ -88,4 +88,8 @@ dialog>div:last-of-type>button {
 .container>p {
     padding: 0.5em 2em;
     text-transform: capitalize;
+}
+
+.container:empty::before {
+    content: "Add word to begin";
 }

@@ -3,16 +3,28 @@ import "./style.css";
 import * as ui from "./ui.js";
 import list from "./list.json";
 
-const words = {};
+const words = [];
+const fakeWords = [];
 
 document.getElementById("reset-button").addEventListener("click", e => {
-
+    ui.prompt("Reset game?", "This will remove all words and players", [
+        {
+            text: "Cancel",
+            close: true
+        },
+        {
+            text: "Reset",
+            close: true,
+            onclick: () => {
+                words = [];
+                fakeWords = [];
+            },
+        },
+    ]);
 });
 
 document.getElementById("shuffle-button").addEventListener("click", e => {
-    document.querySelector("h1").addEventListener("click", e => {
-        console.log("clicked");
-    });
+
 });
 
 document.getElementById("add-button").addEventListener("click", e => {
@@ -20,12 +32,12 @@ document.getElementById("add-button").addEventListener("click", e => {
         title: "Add word",
         body: `<label>
     Word:
-    <input type="text" id="word-input">
+    <input type="text" id="word-input" autocomplete="off">
 </label>
 <button id="random-button">Random</button>
 <label>
-    Player: (leave blank for fake word)
-    <input type="text" id="player-input">
+    Player: (leave blank to add fake word)
+    <input type="text" id="player-input" autocomplete="off">
 </label>`,
         buttons: [
             {
@@ -39,7 +51,7 @@ document.getElementById("add-button").addEventListener("click", e => {
                     const word = document.getElementById("word-input").value;
                     const player = document.getElementById("player-input").value;
                     if (word) {
-                        add(word, player);
+                        addWord(word, player);
                         modal.close();
                     }
                 },
@@ -56,10 +68,25 @@ document.getElementById("add-button").addEventListener("click", e => {
 });
 
 function addWord(word, player) {
+    word = word.toLowerCase();
+    player = player.toLowerCase();
     if (player) {
-        console.log("added real word", word, player);
+        words.push([
+            word,
+            player,
+        ]);
     }
     else {
-        console.log("added fake word", word);
+        fakeWords.push(word);
     }
+
+    const element = new ui.Element("p", player ? `${player}: ${word}` : word).element;
+    // Add word to word container
+    document.getElementById("word-container").append(new ui.Element("p", word).element);
+    // Add word to player container
+    document.getElementById("player-container").append(element);
+
+    element.addEventListener("click", e => {
+        
+    });
 }
