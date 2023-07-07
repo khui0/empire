@@ -107,4 +107,5 @@ dialog>div:last-of-type>button {
 
 .container:empty::before {
     content: "Add word to begin";
+    padding: 0.5em 2em;
 }
