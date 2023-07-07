@@ -92,7 +92,7 @@ function addWord(word, player) {
         });
         modal.querySelector("h2").style.textTransform = "capitalize";
         document.getElementById("eliminate-button")?.addEventListener("click", e => {
-            const item = words.find(item => item.word = word);
+            const item = words.find(item => item.word == word);
             if (!item.eliminated) {
                 item.eliminated = true;
                 element.classList.add("eliminated");
