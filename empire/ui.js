@@ -72,4 +72,3 @@ export class Element {
         return element;
     }
 }
-
