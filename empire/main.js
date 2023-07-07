@@ -24,13 +24,9 @@ document.getElementById("reset-button").addEventListener("click", e => {
 });
 
 document.getElementById("shuffle-button").addEventListener("click", e => {
-    const container = document.getElementById("word-container");
     const array = words.map(item => item.word);
     shuffleArray(array);
-    container.innerHTML = "";
-    array.forEach(word => {
-        container.append(new ui.Element("p", word).element);
-    });
+    populateWords(array);
 });
 
 document.getElementById("add-button").addEventListener("click", e => {
@@ -79,25 +75,74 @@ function addWord(word, player) {
     words.push({
         word,
         player,
+        eliminated: false,
     });
 
     const element = new ui.Element("p", player ? `${player}: ${word}` : word).element;
+    if (player) {
+        element.addEventListener("click", e => {
+            // Array with players that are not eliminated
+            const empires = words.filter(item => item.eliminated == false && item.player?.trim());
+            // Creates an html string using the array
+            const options = (() => {
+                let html = "";
+                empires.forEach(item => [
+                    html += `<option value="${item.player}">${item.player}: ${item.word}</option>`
+                ]);
+                return html;
+            })();
+            // Show modal
+            const modal = ui.modal({
+                title: element.textContent,
+                body: `<label>
+    Acquired by
+    <select id="team-select">${options}</select>
+</label>
+<button id="apply-button">Apply</button>
+<button id="remove-button">Remove Word</button>`,
+                buttons: [
+                    {
+                        text: "Close",
+                        close: true
+                    },
+                ],
+            });
+            modal.querySelector("h2").style.textTransform = "capitalize";
+        });
+    }
+    else {
+        // Show modal
+        element.addEventListener("click", e => {
+            const modal = ui.modal({
+                title: element.textContent,
+                body: `<button id="remove-button">Remove Word</button>`,
+                buttons: [
+                    {
+                        text: "Close",
+                        close: true
+                    },
+                ],
+            });
+            modal.querySelector("h2").style.textTransform = "capitalize";
+            document.getElementById("remove-button").addEventListener("click", e => {
+
+                element.remove();
+                modal.close();
+            });
+        });
+    }
+
     // Add word to word container
     document.getElementById("word-container").append(new ui.Element("p", word).element);
     // Add word to player container
     document.getElementById("player-container").append(element);
+}
 
-    element.addEventListener("click", e => {
-        ui.modal({
-            title: "Options",
-            body: ``,
-            buttons: [
-                {
-                    text: "Cancel",
-                    close: true
-                },
-            ],
-        })
+function populateWords(array) {
+    const container = document.getElementById("word-container");
+    container.innerHTML = "";
+    array.forEach(word => {
+        container.append(new ui.Element("p", word).element);
     });
 }
 

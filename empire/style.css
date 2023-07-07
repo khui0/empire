@@ -36,11 +36,13 @@ label>:first-child {
     margin-top: 5px;
 }
 
-input {
+input,
+select {
     height: 1.9em;
     padding: 0 0.25em;
     border: 1px solid var(--text-color);
     border-radius: 5px;
+    color: var(--text-color);
 }
 
 dialog {
