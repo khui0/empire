@@ -1,6 +1,7 @@
 import "./reset.css";
 import "./style.css";
 import * as ui from "./ui.js";
+import rules from "./rules.html?raw";
 import list from "./list.json";
 
 let words = [];
@@ -21,6 +22,19 @@ document.getElementById("reset-button").addEventListener("click", e => {
             },
         },
     ]);
+});
+
+document.getElementById("rules-button").addEventListener("click", e => {
+    const modal = ui.modal({
+        title: "Rules",
+        body: rules,
+        buttons: [
+            {
+                text: "Close",
+                close: true
+            },
+        ],
+    });
 });
 
 document.getElementById("shuffle-button").addEventListener("click", e => {
