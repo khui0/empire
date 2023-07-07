@@ -1,24 +1,50 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import "./reset.css";
+import "./style.css";
+import * as ui from "./ui.js";
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+document.getElementById("shuffle-button").addEventListener("click", e => {
 
-setupCounter(document.querySelector('#counter'))
+});
+
+document.getElementById("add-button").addEventListener("click", e => {
+    ui.modal({
+        title: "Add word",
+        body: `<label>
+    Word:
+    <input type="text">
+</label>
+<button>Random</button>
+<label>
+    Player: (leave blank for fake word)
+    <input type="text">
+</label>`,
+        buttons: [
+            {
+                text: "Cancel",
+                close: true
+            },
+            {
+                text: "Add",
+                close: true,
+                onclick: () => {
+                    console.log("a");
+                },
+            },
+        ],
+        blur: true,
+    });
+});
+
+// ui.prompt("Remove player", "Are you sure you want to remove _?", [
+//     {
+//         text: "Cancel",
+//         close: true,
+//     },
+//     {
+//         text: "Remove",
+//         close: true,
+//         onclick: () => {
+//             console.log("REMOVE");
+//         },
+//     },
+// ]);
