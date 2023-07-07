@@ -3,7 +3,7 @@ import "./style.css";
 import * as ui from "./ui.js";
 import list from "./list.json";
 
-const words = [];
+let words = [];
 
 document.getElementById("reset-button").addEventListener("click", e => {
     ui.prompt("Reset game?", "This will remove all words and players", [
@@ -16,7 +16,8 @@ document.getElementById("reset-button").addEventListener("click", e => {
             close: true,
             onclick: () => {
                 words = [];
-                fakeWords = [];
+                document.getElementById("word-container").innerHTML = "";
+                document.getElementById("player-container").innerHTML = "";
             },
         },
     ]);
