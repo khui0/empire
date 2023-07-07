@@ -4,7 +4,6 @@ import * as ui from "./ui.js";
 import list from "./list.json";
 
 const words = [];
-const fakeWords = [];
 
 document.getElementById("reset-button").addEventListener("click", e => {
     ui.prompt("Reset game?", "This will remove all words and players", [
@@ -24,7 +23,13 @@ document.getElementById("reset-button").addEventListener("click", e => {
 });
 
 document.getElementById("shuffle-button").addEventListener("click", e => {
-
+    const container = document.getElementById("word-container");
+    const array = words.map(item => item.word);
+    shuffleArray(array);
+    container.innerHTML = "";
+    array.forEach(word => {
+        container.append(new ui.Element("p", word).element);
+    });
 });
 
 document.getElementById("add-button").addEventListener("click", e => {
@@ -70,15 +75,10 @@ document.getElementById("add-button").addEventListener("click", e => {
 function addWord(word, player) {
     word = word.toLowerCase();
     player = player.toLowerCase();
-    if (player) {
-        words.push([
-            word,
-            player,
-        ]);
-    }
-    else {
-        fakeWords.push(word);
-    }
+    words.push({
+        word,
+        player,
+    });
 
     const element = new ui.Element("p", player ? `${player}: ${word}` : word).element;
     // Add word to word container
@@ -87,6 +87,24 @@ function addWord(word, player) {
     document.getElementById("player-container").append(element);
 
     element.addEventListener("click", e => {
-        
+        ui.modal({
+            title: "Options",
+            body: ``,
+            buttons: [
+                {
+                    text: "Cancel",
+                    close: true
+                },
+            ],
+        })
     });
+}
+
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
 }
