@@ -77,10 +77,11 @@ function addWord(word, player) {
         eliminated: false,
     });
 
-    const element = new ui.Element("p", player ? `${player}: ${word}` : word).element;
+    const content = player ? `${player}: ${word}` : word;
+    const element = new ui.Element("p", content).element;
     element.addEventListener("click", e => {
         const modal = ui.modal({
-            title: element.textContent,
+            title: content,
             body: player ? `<button id="eliminate-button">Eliminate</button>
 <button id="remove-button">Remove</button>` : `<button id="remove-button">Remove</button>`,
             buttons: [
@@ -104,11 +105,23 @@ function addWord(word, player) {
             modal.close();
         });
         document.getElementById("remove-button").addEventListener("click", e => {
-            words = words.filter(item => item.word != word);
-            const array = words.map(item => item.word);
-            populateWordContainer(array);
-            element.remove();
-            modal.close();
+            ui.prompt("Remove word?", `Are you sure you want to remove ${content}?`, [
+                {
+                    text: "Cancel",
+                    close: true
+                },
+                {
+                    text: "Remove",
+                    close: true,
+                    onclick: () => {
+                        words = words.filter(item => item.word != word);
+                        const array = words.map(item => item.word);
+                        populateWordContainer(array);
+                        element.remove();
+                        modal.close();
+                    },
+                },
+            ]);
         });
     });
 
