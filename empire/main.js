@@ -26,7 +26,7 @@ document.getElementById("reset-button").addEventListener("click", e => {
 document.getElementById("shuffle-button").addEventListener("click", e => {
     const array = words.map(item => item.word);
     shuffleArray(array);
-    populateWords(array);
+    populateWordContainer(array);
 });
 
 document.getElementById("add-button").addEventListener("click", e => {
@@ -61,7 +61,6 @@ document.getElementById("add-button").addEventListener("click", e => {
         ],
     });
 
-
     document.getElementById("random-button").addEventListener("click", e => {
         const word = document.getElementById("word-input");
         // Get random word from list
@@ -79,66 +78,47 @@ function addWord(word, player) {
     });
 
     const element = new ui.Element("p", player ? `${player}: ${word}` : word).element;
-    if (player) {
-        element.addEventListener("click", e => {
-            // Array with players that are not eliminated
-            const empires = words.filter(item => item.eliminated == false && item.player?.trim());
-            // Creates an html string using the array
-            const options = (() => {
-                let html = "";
-                empires.forEach(item => [
-                    html += `<option value="${item.player}">${item.player}: ${item.word}</option>`
-                ]);
-                return html;
-            })();
-            // Show modal
-            const modal = ui.modal({
-                title: element.textContent,
-                body: `<label>
-    Acquired by
-    <select id="team-select">${options}</select>
-</label>
-<button id="apply-button">Apply</button>
-<button id="remove-button">Remove Word</button>`,
-                buttons: [
-                    {
-                        text: "Close",
-                        close: true
-                    },
-                ],
-            });
-            modal.querySelector("h2").style.textTransform = "capitalize";
+    element.addEventListener("click", e => {
+        const modal = ui.modal({
+            title: element.textContent,
+            body: player ? `<button id="eliminate-button">Eliminate</button>
+<button id="remove-button">Remove</button>` : `<button id="remove-button">Remove</button>`,
+            buttons: [
+                {
+                    text: "Close",
+                    close: true
+                },
+            ],
         });
-    }
-    else {
-        // Show modal
-        element.addEventListener("click", e => {
-            const modal = ui.modal({
-                title: element.textContent,
-                body: `<button id="remove-button">Remove Word</button>`,
-                buttons: [
-                    {
-                        text: "Close",
-                        close: true
-                    },
-                ],
-            });
-            modal.querySelector("h2").style.textTransform = "capitalize";
-            document.getElementById("remove-button").addEventListener("click", e => {
-
-                element.remove();
-                modal.close();
-            });
+        modal.querySelector("h2").style.textTransform = "capitalize";
+        document.getElementById("eliminate-button")?.addEventListener("click", e => {
+            const item = words.find(item => item.word = word);
+            if (!item.eliminated) {
+                item.eliminated = true;
+                element.classList.add("eliminated");
+            }
+            else {
+                item.eliminated = false;
+                element.classList.remove("eliminated");
+            }
+            modal.close();
         });
-    }
+        document.getElementById("remove-button").addEventListener("click", e => {
+            words = words.filter(item => item.word != word);
+            const array = words.map(item => item.word);
+            populateWordContainer(array);
+            element.remove();
+            modal.close();
+        });
+    });
 
-    // Add word to word container
+    // Append to word container
     document.getElementById("word-container").append(new ui.Element("p", word).element);
-    // Add word to player container
+    // Append to player container
     document.getElementById("player-container").append(element);
 }
 
-function populateWords(array) {
+function populateWordContainer(array) {
     const container = document.getElementById("word-container");
     container.innerHTML = "";
     array.forEach(word => {
