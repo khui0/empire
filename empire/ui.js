@@ -54,6 +54,8 @@ export function modal(options) {
     dialog.addEventListener("close", () => {
         dialog.remove();
     });
+
+    return dialog;
 }
 
 export class Element {

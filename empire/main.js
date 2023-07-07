@@ -1,22 +1,31 @@
 import "./reset.css";
 import "./style.css";
 import * as ui from "./ui.js";
+import list from "./list.json";
 
-document.getElementById("shuffle-button").addEventListener("click", e => {
+const words = {};
+
+document.getElementById("reset-button").addEventListener("click", e => {
 
 });
 
+document.getElementById("shuffle-button").addEventListener("click", e => {
+    document.querySelector("h1").addEventListener("click", e => {
+        console.log("clicked");
+    });
+});
+
 document.getElementById("add-button").addEventListener("click", e => {
-    ui.modal({
+    const modal = ui.modal({
         title: "Add word",
         body: `<label>
     Word:
-    <input type="text">
+    <input type="text" id="word-input">
 </label>
-<button>Random</button>
+<button id="random-button">Random</button>
 <label>
     Player: (leave blank for fake word)
-    <input type="text">
+    <input type="text" id="player-input">
 </label>`,
         buttons: [
             {
@@ -25,26 +34,32 @@ document.getElementById("add-button").addEventListener("click", e => {
             },
             {
                 text: "Add",
-                close: true,
+                close: false,
                 onclick: () => {
-                    console.log("a");
+                    const word = document.getElementById("word-input").value;
+                    const player = document.getElementById("player-input").value;
+                    if (word) {
+                        add(word, player);
+                        modal.close();
+                    }
                 },
             },
         ],
-        blur: true,
+    });
+
+
+    document.getElementById("random-button").addEventListener("click", e => {
+        const word = document.getElementById("word-input");
+        // Get random word from list
+        word.value = list[Math.floor(Math.random() * list.length)];
     });
 });
 
-// ui.prompt("Remove player", "Are you sure you want to remove _?", [
-//     {
-//         text: "Cancel",
-//         close: true,
-//     },
-//     {
-//         text: "Remove",
-//         close: true,
-//         onclick: () => {
-//             console.log("REMOVE");
-//         },
-//     },
-// ]);
+function addWord(word, player) {
+    if (player) {
+        console.log("added real word", word, player);
+    }
+    else {
+        console.log("added fake word", word);
+    }
+}

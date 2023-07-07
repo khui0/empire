@@ -46,7 +46,7 @@ input {
 dialog {
     -webkit-user-select: none;
     user-select: none;
-    
+
     display: flex;
     flex-direction: column;
     gap: 5px;
