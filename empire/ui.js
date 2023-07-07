@@ -3,7 +3,7 @@ export function alert(title, text, callback, blur) {
         title,
         body: new Element("p", text).element.outerHTML,
         buttons: [{
-            text: "Okay",
+            text: "Close",
             close: true,
             onclick: callback,
         }],

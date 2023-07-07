@@ -97,6 +97,7 @@ function addWord(word, player) {
             if (!item.eliminated) {
                 item.eliminated = true;
                 element.classList.add("eliminated");
+                checkForWinner();
             }
             else {
                 item.eliminated = false;
@@ -145,5 +146,13 @@ function shuffleArray(array) {
         var temp = array[i];
         array[i] = array[j];
         array[j] = temp;
+    }
+}
+
+function checkForWinner() {
+    const empires = words.filter(item => item.eliminated == false && item.player?.trim());
+    if (empires.length == 1) {
+        const winner = empires[0];
+        ui.alert("Winner!", `${winner.player} won with the word ${winner.word}`);
     }
 }
